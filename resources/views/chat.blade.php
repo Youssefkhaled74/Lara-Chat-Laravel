@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MeChat</title>
+    <title>Lara - Developer Assistant</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
+        /* General Styles */
         body {
-            background-color: #1e1e1e;
-            color: #d4d4d4;
-            font-family: 'Roboto', sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
             margin: 0;
-            padding-top: 60px; /* Space for the fixed navbar */
+            padding-top: 70px; /* Space for the fixed navbar */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -21,48 +22,78 @@
             flex-direction: column;
         }
 
+        /* Navbar */
         nav {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background-color: #252526;
-            padding: 10px 20px;
+            background: linear-gradient(90deg, #1a1a1a, #2a2a2a);
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            z-index: 1000; /* Ensure it stays above other content */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
         }
 
         nav .logo {
-            font-size: 20px;
-            font-weight: bold;
-            color: #9cdcfe;
+            font-size: 22px;
+            font-weight: 700;
+            color: #4dabf7;
         }
 
-        nav .status {
+        /* Chat Header */
+        #chat-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #chat-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #4dabf7;
+            margin: 0;
+        }
+
+        #chat-header p {
+            font-size: 16px;
+            color: #a0a0a0;
+            margin: 5px 0 0;
+        }
+
+        /* Online Status */
+        #online-status {
             display: flex;
             align-items: center;
-            color: #d4d4d4;
-        }
-
-        nav .status span {
-            margin-left: 8px;
+            justify-content: center;
+            margin-top: 10px;
             font-size: 14px;
+            color: #4caf50;
         }
 
+        #online-status .dot {
+            width: 10px;
+            height: 10px;
+            background-color: #4caf50;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        /* Chat Box */
         #chat-box {
-            background-color: #252526;
+            background-color: #1e1e1e;
             width: 100%;
-            max-width: 600px;
+            max-width: 700px;
+            height: 65vh;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
             display: flex;
             flex-direction: column;
         }
 
+        /* Messages Section */
         #messages {
             padding: 20px;
             flex: 1;
@@ -71,29 +102,40 @@
         }
 
         #messages div {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         #messages strong {
-            font-weight: bold;
+            font-weight: 600;
+            color: #4dabf7;
         }
 
         #messages .bot-message {
-            background-color: #313131;
-            border-left: 4px solid #dcdcaa;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            color: #d4d4d4;
+            background-color: #2a2a2a;
+            border-left: 4px solid #4dabf7;
+            color: #e0e0e0;
         }
 
         #messages .user-message {
-            background-color: #1e1e1e;
-            border-left: 4px solid #007acc;
+            background-color: #1a1a1a;
+            border-left: 4px solid #4caf50;
+            color: #e0e0e0;
+        }
+
+        /* Input Section */
+        #input-section {
+            display: flex;
+            align-items: center;
+            background-color: #252526;
             padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            color: #d4d4d4;
         }
 
         #message-input {
@@ -101,51 +143,61 @@
             padding: 14px;
             border: none;
             background-color: #2d2d2d;
-            color: #d4d4d4;
+            color: #e0e0e0;
             font-size: 16px;
             outline: none;
-            border-radius: 0;
+            border-radius: 8px;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        #message-input:focus {
+            background-color: #3c3c3c;
         }
 
         #send-button {
             width: 120px;
             padding: 14px;
             border: none;
-            background-color: #007acc;
+            background: linear-gradient(90deg, #4dabf7, #2196f3);
             color: #ffffff;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
-            border-radius: 0;
-            transition: background-color 0.3s ease;
+            border-radius: 8px;
+            transition: transform 0.2s ease, background 0.3s ease;
         }
 
         #send-button:hover {
-            background-color: #005a9e;
+            background: linear-gradient(90deg, #2196f3, #4dabf7);
+            transform: scale(1.05);
         }
 
         #send-button:active {
-            background-color: #00497a;
+            transform: scale(0.95);
         }
 
-        #chat-box::-webkit-scrollbar,
+        /* Scrollbar */
         #messages::-webkit-scrollbar {
             width: 8px;
         }
 
-        #chat-box::-webkit-scrollbar-thumb,
         #messages::-webkit-scrollbar-thumb {
-            background-color: #4a4a4a;
+            background-color: #4dabf7;
             border-radius: 4px;
         }
 
-        #chat-box::-webkit-scrollbar-thumb:hover,
         #messages::-webkit-scrollbar-thumb:hover {
-            background-color: #555555;
+            background-color: #2196f3;
         }
 
         /* Mobile Responsiveness */
         @media screen and (max-width: 768px) {
+            #chat-box {
+                height: 90vh;
+                border-radius: 0;
+            }
+
             #send-button {
                 width: 100px;
                 font-size: 14px;
@@ -161,16 +213,24 @@
 </head>
 <body>
     <nav>
-        <div class="logo">MeChat</div>
-        <div class="status">
-            <span>&#x25CF;</span>
-            <span>Online</span>
-        </div>
+        <div class="logo">Lara</div>
     </nav>
 
+    <!-- Chat Header -->
+    <div id="chat-header">
+        <h1>Lara</h1>
+        <p>Your AI-powered assistant for all things technology and development.</p>
+        <!-- Online Status -->
+        <div id="online-status">
+            <div class="dot"></div>
+            <span>Online</span>
+        </div>
+    </div>
+
+    <!-- Chat Box -->
     <div id="chat-box">
         <div id="messages"></div>
-        <div style="display: flex; align-items: center;">
+        <div id="input-section">
             <input type="text" id="message-input" placeholder="Type a message...">
             <button id="send-button">Send</button>
         </div>
@@ -191,7 +251,7 @@
                     },
                     success: function(response) {
                         $('#messages').append('<div class="user-message"><strong>Me:</strong> ' + message + '</div>');
-                        $('#messages').append('<div class="bot-message"><strong>Bot:</strong> ' + response.message + '</div>');
+                        $('#messages').append('<div class="bot-message"><strong>Lara:</strong> ' + response.message + '</div>');
                         $('#message-input').val('');
                         $('#messages').scrollTop($('#messages')[0].scrollHeight);
                     }
